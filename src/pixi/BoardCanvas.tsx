@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Application } from 'pixi.js';
 import { computeScale } from './layout';
 import { drawBoard } from './drawBoard';
-import { DESIGH_HEIGHT, DESIGN_WIDTH } from '../theme/theme';
+import { GAME_BOARD_HEIGHT, GAME_BOARD_WIDTH } from '../theme/theme';
 
 export function BoardCanvas() {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -16,13 +16,18 @@ export function BoardCanvas() {
 
     const resize = () => {
       if (!app) return;
-      const scale = computeScale(window.innerWidth, window.innerHeight);
+      const width = host.clientWidth;
+      const height = host.clientHeight;
+      if (width === 0 || height === 0) return;
+      const scale = computeScale(width, height);
       app.renderer.resize(
-        Math.round(DESIGN_WIDTH * scale),
-        Math.round(DESIGH_HEIGHT * scale),
+        Math.round(GAME_BOARD_WIDTH * scale),
+        Math.round(GAME_BOARD_HEIGHT * scale),
       );
       app.stage.scale.set(scale);
     };
+
+    const observer = new ResizeObserver(resize);
 
     void (async () => {
       const instance = new Application();
@@ -31,8 +36,8 @@ export function BoardCanvas() {
         antialias: true,
         autoDensity: true,
         resolution: window.devicePixelRatio || 1,
-        width: DESIGN_WIDTH,
-        height: DESIGH_HEIGHT,
+        width: GAME_BOARD_WIDTH,
+        height: GAME_BOARD_HEIGHT,
       });
 
       // Guard against React StrictMode double-invoke: if the effect was
@@ -46,12 +51,12 @@ export function BoardCanvas() {
       host.appendChild(app.canvas);
       drawBoard(app.stage);
       resize();
-      window.addEventListener('resize', resize);
+      observer.observe(host);
     })();
 
     return () => {
       cancelled = true;
-      window.removeEventListener('resize', resize);
+      observer.disconnect();
       if (app) {
         app.destroy(true, { children: true });
         app = null;
@@ -59,5 +64,10 @@ export function BoardCanvas() {
     };
   }, []);
 
-  return <div ref={hostRef} className='board-host' />;
+  return (
+    <div
+      ref={hostRef}
+      className='flex h-full w-full items-center justify-center'
+    />
+  );
 }
