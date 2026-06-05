@@ -1,7 +1,4 @@
 import {
-  DESIGN_WIDTH,
-  DESIGH_HEIGHT,
-  MIN_SCALE,
   POINT_HEIGHT,
   COLORS,
   POINT_WIDTH,
@@ -148,13 +145,14 @@ export function getBoardLayout(): BoardLayout {
   };
 }
 
+// Contain-fit the board into the available container. The board keeps its exact
+// 389:328 proportions; it grows large on desktop and shrinks to fit on mobile
 export function computeScale(
-  viewportWidth: number,
-  viewportHeight: number,
+  containerWidth: number,
+  containerHeight: number,
 ): number {
-  const fit = Math.min(
-    viewportWidth / DESIGN_WIDTH,
-    viewportHeight / DESIGH_HEIGHT,
+  return Math.min(
+    containerWidth / GAME_BOARD_WIDTH,
+    containerHeight / GAME_BOARD_HEIGHT,
   );
-  return Math.max(fit, MIN_SCALE);
 }
