@@ -3,13 +3,16 @@ import { POINTS_PER_QUADRANT } from '../core/constants';
 // Responsive design stage (the Figma frame), logical px.
 export const DESIGN_WIDTH = 393;
 export const DESIGH_HEIGHT = 852;
-export const MIN_SCALE = 1;
 
 // Board block (GameBoard) within the stage.
 export const GAME_BOARD_WIDTH = 389;
 export const GAME_BOARD_HEIGHT = 328;
-export const GAME_BOARD_X = (DESIGN_WIDTH - GAME_BOARD_WIDTH) / 2;
-export const GAME_BOARD_Y = (DESIGH_HEIGHT - GAME_BOARD_HEIGHT) / 2;
+
+// The board is the canvas; it is drawn from the origin and centered on screen
+// by the Tailwind layout. The 393x852 phone-frame constants above are retained
+// for the future chrome layout but no longer drive scaling or position.
+export const GAME_BOARD_X = 0;
+export const GAME_BOARD_Y = 0;
 
 // Frame and playing surface.
 export const FRAME_RADIUS = 5;
