@@ -1,3 +1,5 @@
+import { BoardCanvas } from './pixi/BoardCanvas';
+
 export function App() {
-  return <div>bbbackgammon</div>;
+  return <BoardCanvas />;
 }
