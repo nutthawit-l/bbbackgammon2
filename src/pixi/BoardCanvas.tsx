@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Application } from 'pixi.js';
 import { computeScale } from './layout';
 import { drawBoard } from './drawBoard';
+import { drawCheckers } from './drawCheckers';
 import { GAME_BOARD_HEIGHT, GAME_BOARD_WIDTH } from '../theme/theme';
 
 export function BoardCanvas() {
@@ -50,6 +51,7 @@ export function BoardCanvas() {
       app = instance;
       host.appendChild(app.canvas);
       drawBoard(app.stage);
+      drawCheckers(app.stage);
       resize();
       observer.observe(host);
     })();
