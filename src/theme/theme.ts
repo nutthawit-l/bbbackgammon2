@@ -37,6 +37,17 @@ export const SIDEBOARD_GAP = 10;
 export const TRAY_HEIGHT = 134;
 export const CUBE_SIZE = 20;
 
+// Checkers (from Figma checker SVG).
+export const CHECKER_RADIUS = 10;
+export const CHECKER_OUTER_STROKE = 1.5;
+export const CHECKER_INNER_RING_RADIUS = 6;
+export const CHECKER_INNER_RING_STROKE = 0.9;
+
+// Bear-off tray bars (borne-off checkers render as thin horizontal bars).
+export const TRAY_BAR_WIDTH = 21;
+export const TRAY_BAR_HEIGHT = 5;
+export const TRAY_BAR_STROKE = 1;
+
 // Palette
 export const COLORS = {
   tableTop: 0x3d6db5,
@@ -48,4 +59,10 @@ export const COLORS = {
   pointRust: 0x8b2200,
   trayInner: 0x351b0b,
   cubeSlotStroke: 0x7b4820,
+  checkerWhite: 0xe0dcd5,
+  checkerWhiteStroke: 0x9a9490,
+  checkerWhiteRing: 0xc2bfba,
+  checkerRed: 0xd42200,
+  checkerRedStroke: 0x8a1200,
+  checkerRedRing: 0xa81800,
 } as const;
