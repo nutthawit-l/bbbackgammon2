@@ -1,9 +1,12 @@
-import { BoardCanvas } from './pixi/BoardCanvas';
+import { Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { Game } from './pages/Game';
 
 export function App() {
   return (
-    <div className='flex h-dvh w-screen items-center justify-center p-3 bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)]'>
-      <BoardCanvas />;
-    </div>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/game' element={<Game />} />
+    </Routes>
   );
 }
