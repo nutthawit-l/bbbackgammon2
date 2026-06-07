@@ -12,9 +12,13 @@
     "deploy": "pnpm build && wrangler deploy"
   },
   "dependencies": {
+    "@fontsource/cinzel": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "lucide-react": "^1.17.0",
     "pixi.js": "^8.18.1",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.17.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
