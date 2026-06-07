@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home as HomeIcon, Settings, Play, Globe, Users } from 'lucide-react';
+import { Play, Globe, Users } from 'lucide-react';
+import { Header } from '../components/Header';
 
 const PIP_LAYOUT: Record<number, number[]> = {
   3: [0, 4, 8],
@@ -66,31 +67,7 @@ export function Home() {
   return (
     <div className='flex min-h-dvh w-full flex-col items-center bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)] px-6 pt-4 pb-8'>
       <div className='flex w-full max-w-[420px] flex-1 flex-col md:max-w-[520px]'>
-        <header className='flex items-center justify-between'>
-          <button
-            type='button'
-            aria-label='Home'
-            className='flex size-12 items-center justify-center rounded-[14px] bg-black/60 text-white shadow-[0px_10px_15px_rgba(0,0,0,0.1),0px_4px_6px_rgba(0,0,0,0.1)]'
-          >
-            <HomeIcon className='size-6' />
-          </button>
-          <div className='flex items-center gap-2'>
-            <button
-              type='button'
-              aria-label='Help'
-              className='flex size-12 items-center justify-center rounded-[14px] bg-black/60 text-[20px] font-bold text-white shadow-[0px_10px_15px_rgba(0,0,0,0.1),0px_4px_6px_rgba(0,0,0,0.1)]'
-            >
-              ?
-            </button>
-            <button
-              type='button'
-              aria-label='Settings'
-              className='flex size-12 items-center justify-center rounded-[14px] bg-black/60 text-white shadow-[0px_10px_15px_rgba(0,0,0,0.1),0px_4px_6px_rgba(0,0,0,0.1)]'
-            >
-              <Settings className='size-6' />
-            </button>
-          </div>
-        </header>
+        <Header />
 
         <main className='flex flex-1 flex-col items-center justify-center gap-6'>
           <div className='relative flex flex-col items-center'>
