@@ -69,7 +69,7 @@ export function BoardCanvas() {
   return (
     <div
       ref={hostRef}
-      className='flex h-full w-full items-center justify-center'
+      className='flex flex-1 min-h-0 w-full items-center justify-center'
     />
   );
 }
