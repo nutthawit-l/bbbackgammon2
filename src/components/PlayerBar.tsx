@@ -3,7 +3,7 @@ export function PlayerBar({ variant }: { variant: 'them' | 'you' }) {
 
   return (
     <div
-      className={`flex w-full justify-end gap-6 ${
+      className={`flex w-full justify-center gap-6 ${
         isThem ? 'items-end' : 'items-start'
       }`}
     >
