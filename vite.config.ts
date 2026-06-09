@@ -12,7 +12,7 @@ export default defineConfig({
       includeAssets: ['icon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'BB Backgammon',
-        short_name: 'Backgammon',
+        short_name: 'BB Backgammon',
         description: 'Experience the Classic',
         theme_color: '#3d6db5',
         background_color: '#2d5a9f',
