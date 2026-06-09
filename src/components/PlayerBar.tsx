@@ -1,4 +1,10 @@
-export function PlayerBar({ variant, maxWidth }: { variant: 'them' | 'you'; maxWidth?: number }) {
+export function PlayerBar({
+  variant,
+  maxWidth,
+}: {
+  variant: 'them' | 'you';
+  maxWidth?: number;
+}) {
   const isThem = variant === 'them';
 
   return (
