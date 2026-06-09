@@ -1,4 +1,4 @@
-export function PlayerBar({ variant }: { variant: 'them' | 'you' }) {
+export function PlayerBar({ variant, maxWidth }: { variant: 'them' | 'you'; maxWidth?: number }) {
   const isThem = variant === 'them';
 
   return (
@@ -6,6 +6,7 @@ export function PlayerBar({ variant }: { variant: 'them' | 'you' }) {
       className={`flex w-full justify-center gap-6 ${
         isThem ? 'items-end' : 'items-start'
       }`}
+      style={maxWidth != null ? { maxWidth } : undefined}
     >
       <div
         className={`flex items-center gap-2 rounded-[8px] bg-[#1c1c1c] px-2 py-1 drop-shadow-[0px_2px_4px_rgba(0,0,0,0.55)] ${
