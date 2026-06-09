@@ -69,7 +69,11 @@ export function BoardCanvas() {
   return (
     <div
       ref={hostRef}
-      className='flex flex-1 min-h-0 w-full items-center justify-center'
+      // className='flex flex-1 min-h-0 w-full items-center justify-center'
+      className='relative w-full max-w-full max-h-full'
+      style={{
+        aspectRatio: `${GAME_BOARD_WIDTH} / ${GAME_BOARD_HEIGHT}`,
+      }}
     />
   );
 }
