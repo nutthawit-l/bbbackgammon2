@@ -65,7 +65,7 @@ export function Home() {
   const naviate = useNavigate();
 
   return (
-    <div className='flex min-h-dvh w-full flex-col items-center bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)] px-6 pt-4 pb-8'>
+    <div className='flex min-h-dvh w-full flex-col items-center bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-[max(1rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))]'>
       <div className='flex w-full max-w-[420px] flex-1 flex-col md:max-w-[520px]'>
         <Header />
 
