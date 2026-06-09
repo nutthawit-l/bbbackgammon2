@@ -432,44 +432,102 @@ git commit -m "feat: add useRoomSocket hook for WebSocket lifecycle"
 - Create: `src/components/modals/InviteAFriendModal.tsx`
 - Create: `src/components/modals/WaitingFriendModal.tsx`
 
+> [!IMPORTANT]
+> All three modals below are pixel-perfect to the Figma designs (node IDs `55:938`, `55:939`, `59:887`).
+> **No icons** — the Figma designs use plain text only. No `lucide-react` imports for these components.
+
+**Shared Figma Design Tokens (all modals):**
+
+| Token | Value | Source |
+|-------|-------|--------|
+| Overlay | `bg-black/50` | Component root fill `rgba(0,0,0,0.5)` |
+| Card bg | `bg-[#101828]/95` | `rgba(16,24,40, 0.95)` from `r:0.0627, g:0.0941, b:0.1569` at 95% |
+| Card border | `border-2 border-[#364153]/50` | stroke `rgba(54,65,83, 0.5)` 2px inside |
+| Card radius | `rounded-[24px]` | cornerRadius 24 |
+| Card padding | `p-8` (32px all sides) | paddingLeft/Right/Top/Bottom: 32 |
+| Card gap | `gap-3` (12px) | itemSpacing: 12 |
+| Card width | `w-[345px]` (fixed) | absoluteBoundingBox width: 345 |
+| Card shadow | `shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]` | drop-shadow offset y:25, radius:50, spread:-12, alpha:0.25 |
+| Title | Inter Bold 36px / line-height 40px, white | fontWeight:700, fontSize:36, lineHeightPx:40 |
+| Subtitle | Inter Regular 16px / line-height 24px, `#d1d5dc` | fontWeight:400, fontSize:16, `r:0.82,g:0.835,b:0.863` |
+| Muted text | Inter Regular 16px / line-height 24px, `#99a1af` | fontWeight:400, fontSize:16, `r:0.60,g:0.631,b:0.686` |
+| Button bg | `bg-[#1e2939]/90` | `rgba(30,41,57, 0.9)` |
+| Button border | `border border-[#364153]/50` | stroke `rgba(54,65,83,0.5)` 1px inside |
+| Button radius | `rounded-[16px]` | cornerRadius: 16 |
+| Button height | `h-[58px]` | absoluteBoundingBox height: 58 |
+| Button text | Inter Medium 16px, white | fontWeight:500, fontSize:16 |
+| Button shadow | `shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]` | two stacked drop-shadows |
+
 - [ ] **Step 1: Create `PlayOnlineModal`**
+
+Matches Figma node `55:938`. Contains:
+- Title: "Play Online" (36px bold white)
+- Subtitle: "Play a random online opponent" (16px `#d1d5dc`)
+- Button: "Play Anyone"
+- Separator text: "or invite a friend to play online" (16px `#99a1af`)
+- Button: "Invite a Friend"
 
 Create `src/components/modals/PlayOnlineModal.tsx`:
 
 ```tsx
-import { Users, ArrowLeft } from 'lucide-react';
-
 interface PlayOnlineModalProps {
   onClose: () => void;
+  onPlayAnyone: () => void;
   onInvite: () => void;
 }
 
-export function PlayOnlineModal({ onClose, onInvite }: PlayOnlineModalProps) {
+export function PlayOnlineModal({
+  onClose,
+  onPlayAnyone,
+  onInvite,
+}: PlayOnlineModalProps) {
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-6 backdrop-blur-sm">
-      <div className="flex w-full max-w-[345px] flex-col items-center gap-6 rounded-[24px] border-2 border-[#364153]/50 bg-[#101828]/95 p-8 shadow-2xl">
-        <div className="flex w-full items-center">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Back"
-            className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white"
-          >
-            <ArrowLeft className="size-5" />
-          </button>
-          <h2 className="flex-1 text-center font-['Inter'] text-[28px] font-bold text-white">
+    <div
+      className="absolute inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
+      onKeyDown={(e) => e.key === 'Escape' && onClose()}
+    >
+      <div
+        className="flex w-[345px] flex-col items-center gap-3 rounded-[24px] border-2 border-[#364153]/50 bg-[#101828]/95 p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex w-full items-center justify-center px-[10px] py-[10px]">
+          <h2 className="text-center font-['Inter'] text-[36px] font-bold leading-[40px] text-white">
             Play Online
           </h2>
-          <div className="size-10" />
         </div>
-        <button
-          type="button"
-          onClick={onInvite}
-          className="flex h-[58px] w-full items-center justify-center gap-3 rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-md"
-        >
-          <Users className="size-5" />
-          Invite a Friend
-        </button>
+
+        {/* Body */}
+        <div className="flex w-[277px] flex-col gap-3">
+          {/* Subtitle */}
+          <p className="text-center font-['Inter'] text-[16px] leading-[24px] text-[#d1d5dc]">
+            Play a random online opponent
+          </p>
+
+          {/* Play Anyone button */}
+          <button
+            type="button"
+            onClick={onPlayAnyone}
+            className="flex h-[58px] w-full items-center justify-center rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]"
+          >
+            Play Anyone
+          </button>
+
+          {/* Separator text */}
+          <p className="text-center font-['Inter'] text-[16px] leading-[24px] text-[#99a1af]">
+            or invite a friend to play online
+          </p>
+
+          {/* Invite a Friend button */}
+          <button
+            type="button"
+            onClick={onInvite}
+            className="flex h-[58px] w-full items-center justify-center rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]"
+          >
+            Invite a Friend
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -478,55 +536,91 @@ export function PlayOnlineModal({ onClose, onInvite }: PlayOnlineModalProps) {
 
 - [ ] **Step 2: Create `InviteAFriendModal`**
 
+Matches Figma node `55:939`. Contains:
+- Title: "Invite a Friend" (36px bold white)
+- Subtitle: "Share this link to play with a friend" (16px `#d1d5dc`)
+- URL block: rounded-[12px] bg `rgba(30,41,57,0.6)`, text 14px `#99a1af`, line-height 44px (vertically centered)
+- Button: "Copy" (not "Copy Link")
+- Timer text: "09:58 Remaining" (16px `#99a1af`)
+- Button: "Cancel"
+
 Create `src/components/modals/InviteAFriendModal.tsx`:
 
 ```tsx
-import { ArrowLeft, Copy } from 'lucide-react';
+import { useEffect } from 'react';
+import { useGameStore } from '../../store/gameStore';
 
 interface InviteAFriendModalProps {
   roomUrl: string;
   onCopy: () => void;
-  onClose: () => void;
+  onCancel: () => void;
 }
 
 export function InviteAFriendModal({
   roomUrl,
   onCopy,
-  onClose,
+  onCancel,
 }: InviteAFriendModalProps) {
+  const countdown = useGameStore((s) => s.countdown);
+  const decrement = useGameStore((s) => s.decrementCountdown);
+
+  useEffect(() => {
+    const timer = setInterval(() => decrement(), 1000);
+    return () => clearInterval(timer);
+  }, [decrement]);
+
+  const minutes = String(Math.floor(countdown / 60)).padStart(2, '0');
+  const seconds = String(countdown % 60).padStart(2, '0');
+
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-6 backdrop-blur-sm">
-      <div className="flex w-full max-w-[345px] flex-col items-center gap-6 rounded-[24px] border-2 border-[#364153]/50 bg-[#101828]/95 p-8 shadow-2xl">
-        <div className="flex w-full items-center">
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Back"
-            className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white"
-          >
-            <ArrowLeft className="size-5" />
-          </button>
-          <h2 className="flex-1 text-center font-['Inter'] text-[28px] font-bold leading-tight text-white">
+    <div
+      className="absolute inset-0 z-50 flex items-center justify-center bg-black/50"
+    >
+      <div className="flex w-[345px] flex-col items-center gap-3 rounded-[24px] border-2 border-[#364153]/50 bg-[#101828]/95 p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
+        {/* Header */}
+        <div className="flex w-full items-center justify-center px-[10px] py-[10px]">
+          <h2 className="text-center font-['Inter'] text-[36px] font-bold leading-[40px] text-white">
             Invite a Friend
           </h2>
-          <div className="size-10" />
         </div>
-        <p className="text-center font-['Inter'] text-[14px] text-[#d1d5dc]">
-          Share this link with your opponent:
-        </p>
-        <div className="w-full overflow-hidden rounded-lg bg-black/40 p-3">
-          <p className="select-all truncate font-['Inter'] text-sm text-white">
-            {roomUrl}
+
+        {/* Body */}
+        <div className="flex w-[277px] flex-col gap-3">
+          {/* Subtitle */}
+          <p className="text-center font-['Inter'] text-[16px] leading-[24px] text-[#d1d5dc]">
+            Share this link to play with a friend
           </p>
+
+          {/* URL block */}
+          <div className="flex w-full items-center justify-center rounded-[12px] border-[0.59px] border-[#364153]/50 bg-[#1e2939]/60">
+            <p className="select-all truncate text-center font-['Inter'] text-[14px] leading-[44px] text-[#99a1af]">
+              {roomUrl}
+            </p>
+          </div>
+
+          {/* Copy button */}
+          <button
+            type="button"
+            onClick={onCopy}
+            className="flex h-[58px] w-full items-center justify-center rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]"
+          >
+            Copy
+          </button>
+
+          {/* Countdown */}
+          <p className="text-center font-['Inter'] text-[16px] leading-[24px] text-[#99a1af]">
+            {minutes}:{seconds} Remaining
+          </p>
+
+          {/* Cancel button */}
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex h-[58px] w-full items-center justify-center rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]"
+          >
+            Cancel
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={onCopy}
-          className="flex h-[58px] w-full items-center justify-center gap-2 rounded-[16px] bg-[#3d6db5] font-['Inter'] text-[16px] font-medium text-white shadow-md"
-        >
-          <Copy className="size-5" />
-          Copy Link
-        </button>
       </div>
     </div>
   );
@@ -535,11 +629,17 @@ export function InviteAFriendModal({
 
 - [ ] **Step 3: Create `WaitingFriendModal`**
 
+Matches Figma node `59:887`. Contains:
+- Title: "Waiting Friend" (36px bold white — NOT "Waiting for Friend")
+- Subtitle: "Please wait your friend joins." (16px `#d1d5dc`)
+- Timer: "09:59 Remaining" (16px `#d1d5dc` — same color as subtitle, NOT muted)
+- Button: "Cancel"
+- **No spinner/loader icon** — Figma has none
+
 Create `src/components/modals/WaitingFriendModal.tsx`:
 
 ```tsx
 import { useEffect } from 'react';
-import { Loader } from 'lucide-react';
 import { useGameStore } from '../../store/gameStore';
 
 interface WaitingFriendModalProps {
@@ -559,34 +659,50 @@ export function WaitingFriendModal({ onCancel }: WaitingFriendModalProps) {
   const seconds = String(countdown % 60).padStart(2, '0');
 
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50 p-6 backdrop-blur-sm">
-      <div className="flex w-full max-w-[345px] flex-col items-center gap-6 rounded-[24px] border-2 border-[#364153]/50 bg-[#101828]/95 p-8 shadow-2xl">
-        <h2 className="text-center font-['Inter'] text-[28px] font-bold leading-tight text-white">
-          Waiting for Friend
-        </h2>
-        <Loader className="size-8 animate-spin text-[#d1d5dc]" />
-        <p className="text-center font-['Inter'] text-[14px] text-[#d1d5dc]">
-          {minutes}:{seconds} remaining
-        </p>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="flex h-[58px] w-full items-center justify-center rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-md"
-        >
-          Cancel
-        </button>
+    <div
+      className="absolute inset-0 z-50 flex items-center justify-center bg-black/50"
+    >
+      <div className="flex w-[345px] flex-col items-center gap-3 rounded-[24px] border-2 border-[#364153]/50 bg-[#101828]/95 p-8 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
+        {/* Header */}
+        <div className="flex w-full items-center justify-center px-[10px] py-[10px]">
+          <h2 className="text-center font-['Inter'] text-[36px] font-bold leading-[40px] text-white">
+            Waiting Friend
+          </h2>
+        </div>
+
+        {/* Body */}
+        <div className="flex w-[277px] flex-col gap-3">
+          {/* Subtitle */}
+          <p className="text-center font-['Inter'] text-[16px] leading-[24px] text-[#d1d5dc]">
+            Please wait your friend joins.
+          </p>
+
+          {/* Countdown */}
+          <p className="text-center font-['Inter'] text-[16px] leading-[24px] text-[#d1d5dc]">
+            {minutes}:{seconds} Remaining
+          </p>
+
+          {/* Cancel button */}
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex h-[58px] w-full items-center justify-center rounded-[16px] border border-[#364153]/50 bg-[#1e2939]/90 font-['Inter'] text-[16px] font-medium text-white shadow-[0_4px_6px_-4px_rgba(0,0,0,0.1),0_10px_15px_-3px_rgba(0,0,0,0.1)]"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 ```
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Verify**
 
-```bash
-git add src/components/modals/
-git commit -m "feat: add PlayOnline, InviteAFriend, and WaitingFriend modals"
-```
+Visually confirm each modal against its Figma reference image:
+- PlayOnlineModal → Figma `55:938`
+- InviteAFriendModal → Figma `55:939`
+- WaitingFriendModal → Figma `59:887`
 
 ---
 
@@ -699,6 +815,7 @@ Insert just before the final closing `</div>` of the `Home` component's return:
       {modalStep === 'play_online' && (
         <PlayOnlineModal
           onClose={() => setModalStep('none')}
+          onPlayAnyone={() => {/* TODO: Task for random matchmaking */}}
           onInvite={handleInvite}
         />
       )}
@@ -706,7 +823,7 @@ Insert just before the final closing `</div>` of the `Home` component's return:
         <InviteAFriendModal
           roomUrl={roomUrl}
           onCopy={handleCopy}
-          onClose={handleCancel}
+          onCancel={handleCancel}
         />
       )}
       {modalStep === 'waiting' && (
