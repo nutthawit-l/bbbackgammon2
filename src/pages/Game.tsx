@@ -5,7 +5,7 @@ import { BottomBar } from '../components/BottomBar';
 
 export function Game() {
   return (
-    <div className='flex h-dvh w-full flex-col bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]'>
+    <div className='flex h-dvh w-full flex-col bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)]'>
       <Header />
       <main className='flex min-h-0 flex-1 w-full flex-col justify-between overflow-hidden'>
         <PlayerBar variant='them' />
