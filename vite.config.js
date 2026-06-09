@@ -8,7 +8,7 @@ export default defineConfig({
         tailwindcss(),
         VitePWA({
             registerType: 'autoUpdate',
-            includeAssets: ['icon.svg', 'applet-touch-icon.png'],
+            includeAssets: ['icon.svg', 'apple-touch-icon.png'],
             manifest: {
                 name: 'BB Backgammon',
                 short_name: 'Backgammon',
