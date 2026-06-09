@@ -2,7 +2,7 @@ import { Home as HomeIcon, Settings } from 'lucide-react';
 
 export function Header() {
   return (
-    <header className='flex w-full items-center justify-between'>
+    <header className='flex w-full items-center justify-between pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]'>
       <button
         type='button'
         aria-label='Home'
