@@ -958,3 +958,56 @@ Expected: Vite starts on `localhost:5173` (or similar).
 
 Run: `pnpm test`
 Expected: All tests pass.
+
+---
+
+### Task 11: Deploy to Cloudflare Workers
+
+No code changes in this task — build and deploy the app to production.
+
+- [ ] **Step 1: Run all tests one final time**
+
+Run:
+```bash
+pnpm test
+```
+Expected: All tests pass. Do NOT proceed if any test fails.
+
+- [ ] **Step 2: Build and deploy**
+
+The project already has a `deploy` script that builds the Vite frontend and deploys the Worker + Durable Object to Cloudflare.
+
+Run:
+```bash
+pnpm deploy
+```
+
+This executes `pnpm build && wrangler deploy` under the hood.
+
+Expected output should include:
+- `✅ Built successfully` (or equivalent Vite build success)
+- `Uploaded bbackgammon` (the worker name from `wrangler.jsonc`)
+- `Published bbackgammon` with a `*.workers.dev` URL
+- Durable Object migration applied (on first deploy: `Migrated Durable Object GameRoom with tag v1`)
+
+- [ ] **Step 3: Verify the production deployment**
+
+1. Open the `*.workers.dev` URL printed by `wrangler deploy` in a browser.
+2. Click **"Play Online"** → **"Invite a Friend"** → **"Copy Link"**.
+3. Open the copied URL in a second browser tab (or different device).
+4. Both tabs should navigate to `/game/:roomId` showing the board.
+
+- [ ] **Step 4: Commit (if any wrangler-generated files changed)**
+
+Check if Wrangler created or updated any local files (e.g., `.wrangler/`):
+
+```bash
+git status
+```
+
+If there are no changes, skip this step. Otherwise:
+
+```bash
+git add .wrangler
+git commit -m "chore: update wrangler state after deploy"
+```
