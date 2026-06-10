@@ -1,4 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRoomSocket } from '../hooks/useRoomSocket';
 import { BoardCanvas } from '../pixi/BoardCanvas';
 import { Header } from '../components/Header';
 import { PlayerBar } from '../components/PlayerBar';
@@ -7,6 +9,8 @@ import { BottomBar } from '../components/BottomBar';
 export function Game() {
   const mainRef = useRef<HTMLElement>(null);
   const [boardWidth, setBoardWidth] = useState<number | undefined>(undefined);
+  const { roomId } = useParams<{ roomId?: string }>();
+  useRoomSocket(roomId ?? null);
 
   const handleBoardWidth = useCallback((width: number) => {
     setBoardWidth(width);
