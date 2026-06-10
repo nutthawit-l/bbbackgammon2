@@ -2,6 +2,11 @@ import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Globe, Users } from 'lucide-react';
 import { Header } from '../components/Header';
+import { useState, useCallback } from 'react';
+import { PlayOnlineModal } from '../components/modals/PlayOnlineModal';
+import { InviteAFriendModal } from '../components/modals/InviteAFriendModal';
+import { WaitingFriendModal } from '../components/modals/WaitingFriendModal';
+import { useRoomSocket } from '../hooks/useRoomSocket';
 
 const PIP_LAYOUT: Record<number, number[]> = {
   3: [0, 4, 8],
@@ -62,7 +67,38 @@ function MenuButton({
 }
 
 export function Home() {
-  const naviate = useNavigate();
+  const navigate = useNavigate();
+
+  type ModalStep = 'none' | 'play_online' | 'invite' | 'waiting';
+  const [modalStep, setModalStep] = useState<ModalStep>('none');
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const roomUrl = roomId ? `${window.location.origin}/game/${roomId}` : '';
+
+  const handleGameStart = useCallback(
+    (id: string) => {
+      navigate(`/game/${id}`);
+    },
+    [navigate],
+  );
+
+  useRoomSocket(roomId, handleGameStart);
+
+  const handleInvite = async () => {
+    const res = await fetch('/api/rooms', { method: 'POST' });
+    const data = (await res.json()) as { roomId: string };
+    setRoomId(data.roomId);
+    setModalStep('invite');
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(roomUrl);
+    setModalStep('waiting');
+  };
+
+  const handleCancel = () => {
+    setRoomId(null);
+    setModalStep('none');
+  };
 
   return (
     <div className='flex min-h-dvh w-full flex-col items-center bg-[linear-gradient(180deg,#3d6db5_0%,#2d5a9f_100%)] pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] pt-[max(1rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))]'>
@@ -86,11 +122,12 @@ export function Home() {
             <MenuButton
               icon={<Play className='size-5' />}
               label='Play'
-              onClick={() => naviate('/game')}
+              onClick={() => navigate('/game')}
             />
             <MenuButton
               icon={<Globe className='size-5' />}
               label='Play Online'
+              onClick={() => setModalStep('play_online')}
             />
             <MenuButton
               icon={<Users className='size-5' />}
@@ -105,6 +142,25 @@ export function Home() {
           </p>
         </footer>
       </div>
+      {modalStep == 'play_online' && (
+        <PlayOnlineModal
+          onClose={() => setModalStep('none')}
+          onPlayAnyone={() => {
+            /* TODO: Task for random matchmaking */
+          }}
+          onInvite={handleInvite}
+        />
+      )}
+      {modalStep === 'invite' && (
+        <InviteAFriendModal
+          roomUrl={roomUrl}
+          onCopy={handleCopy}
+          onCancel={handleCancel}
+        />
+      )}
+      {modalStep === 'waiting' && (
+        <WaitingFriendModal onCancel={handleCancel} />
+      )}
     </div>
   );
 }
