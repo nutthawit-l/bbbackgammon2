@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "bb backgammon",
+  "name": "bb-backgammon",
   "main": "src/server/index.ts",
   "compatibility_date": "2026-06-04",
   "assets": {
