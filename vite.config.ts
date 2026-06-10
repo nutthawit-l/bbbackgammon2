@@ -31,6 +31,15 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      '/api': 'http://localhost:8787',
+      '/ws': {
+        target: 'http://localhost:8787',
+        ws: true,
+      },
+    },
+  },
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],
